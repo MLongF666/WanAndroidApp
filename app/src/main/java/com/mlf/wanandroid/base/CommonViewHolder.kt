@@ -30,4 +30,5 @@ open class CommonViewHolder(itemView: View):
     fun getBinding(): ViewDataBinding? {
         return binding
     }
+
 }

@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mlf.wanandroid.ui.fragments.HomeFragment"
+        android:name="com.mlf.wanandroid.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_navigation"
-        android:name="com.mlf.wanandroid.ui.fragments.NavigationFragment"
+        android:name="com.mlf.wanandroid.ui.navigtion.NavigationFragment"
         android:label="@string/title_navigation"
         tools:layout="@layout/fragment_navigation" />
     <fragment
         android:id="@+id/navigation_project"
-        android:name="com.mlf.wanandroid.ui.fragments.ProjectFragment"
+        android:name="com.mlf.wanandroid.ui.project.ProjectFragment"
         android:label="@string/title_project"
         tools:layout="@layout/fragment_project" />
     <fragment
         android:id="@+id/navigation_official"
-        android:name="com.mlf.wanandroid.ui.fragments.OfficialFragment"
+        android:name="com.mlf.wanandroid.ui.officia.OfficialFragment"
         android:label="@string/title_official"
         tools:layout="@layout/fragment_official" />
     <fragment
         android:id="@+id/navigation_mine"
-        android:name="com.mlf.wanandroid.ui.fragments.MineFragment"
+        android:name="com.mlf.wanandroid.ui.mine.MineFragment"
         android:label="@string/title_mine"
         tools:layout="@layout/fragment_mine" />
 

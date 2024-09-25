@@ -2,15 +2,14 @@ package com.mlf.wanandroid.ui
 
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mlf.wanandroid.R
 import com.mlf.wanandroid.base.BaseActivity
 import com.mlf.wanandroid.databinding.ActivityMainBinding
-import com.mlf.wanandroid.viewmodel.MainViewModel
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initView() {
-
         val navView = getBinding().navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
@@ -22,7 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 R.id.navigation_mine
             )
         )
-//        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
     }

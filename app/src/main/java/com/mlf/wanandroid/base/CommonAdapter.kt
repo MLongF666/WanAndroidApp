@@ -1,12 +1,9 @@
 package com.mlf.wanandroid.base
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 
 /**
  * @description: TODO RecylerView万能适配器
@@ -14,7 +11,7 @@ import androidx.viewbinding.ViewBinding
  * @date: 2024/9/6 11:21
  * @version: 1.0
  */
-open class CommonAdapter<T,V : ViewDataBinding> : RecyclerView.Adapter<CommonViewHolder> {
+open class CommonAdapter<T : Any> : RecyclerView.Adapter<CommonViewHolder> {
     private var onItemClick:OnItemClick<T>?=null
 
     interface OnItemClick<U> {
@@ -41,21 +38,23 @@ open class CommonAdapter<T,V : ViewDataBinding> : RecyclerView.Adapter<CommonVie
     //这里是 向viewholder中传入要加载的布局id
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             CommonViewHolder {
-        val inflate = DataBindingUtil.inflate<V>(
-            LayoutInflater.from(parent.context),
-            onBindDataListener!!.getLayoutId(viewType),
-            parent,
-            false
-        )
-        return CommonViewHolder.getViewHolder(inflate)
+        val viewDataBinding: ViewDataBinding? = onBindDataListener?.getDataViewBinding(viewType,parent)
+        return CommonViewHolder.getViewHolder(viewDataBinding!!)
 
     }
     fun setOnItemClick(onItemClick:OnItemClick<T>){
         this.onItemClick=onItemClick
     }
+    fun getItem(position: Int): T {
+        return mData[position]
+    }
     //加载的个数
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
     //这里是 实体类与布局进行绑定的方法
     override fun onBindViewHolder(holder: CommonViewHolder, position: Int) {
@@ -68,6 +67,16 @@ open class CommonAdapter<T,V : ViewDataBinding> : RecyclerView.Adapter<CommonVie
         onBindDataListener?.onBindViewHolder(mData[position],holder,getItemViewType(position),position)
     }
 
+    override fun onBindViewHolder(
+        holder: CommonViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()){
+            onBindViewHolder(holder,position)
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         if (onMoreBindDataListener!=null){
             return onMoreBindDataListener!!.getItemViewType(position)
@@ -76,7 +85,7 @@ open class CommonAdapter<T,V : ViewDataBinding> : RecyclerView.Adapter<CommonVie
     }
     interface OnBindDataListener<T> {
         fun onBindViewHolder(model:T,viewHolder:CommonViewHolder,type:Int,position:Int)
-        fun getLayoutId(type:Int):Int
+        fun getDataViewBinding(type: Int, parent: ViewGroup):ViewDataBinding
     }
     interface OnMoreBindDataListener<T>:OnBindDataListener<T> {
         fun getItemViewType(position:Int):Int

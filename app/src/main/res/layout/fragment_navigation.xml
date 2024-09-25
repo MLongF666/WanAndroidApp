@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.NavigationFragment">
+        tools:context=".ui.navigtion.NavigationFragment">
         <TextView
             android:id="@+id/text_view"
             android:layout_centerInParent="true"

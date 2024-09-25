@@ -1,15 +1,14 @@
 package com.mlf.wanandroid.ui.user
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.mlf.wanandroid.R
 import com.mlf.wanandroid.base.BaseActivity
 import com.mlf.wanandroid.databinding.ActivityLoginBinding
 import com.mlf.wanandroid.ui.MainActivity
-import com.mlf.wanandroid.viewmodel.LoginViewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
-
     override fun initView() {
         getBinding().viewModel = getViewModel()
         getViewModel().navigateToRegister.observe(this, Observer {
@@ -24,6 +23,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
                 getViewModel().navigateToHome.value = false
             }
         })
+        getViewModel().loginLiveData.observe(this, Observer {
+            val response = it.getOrNull()
+            if (response != null){
+                if (response.errorCode == 0){
+                    Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show()
+                    toHome()
+                    getViewModel().saveUser(response.data.id)
+                }else{
+                    Toast.makeText(this, response.errorMsg, Toast.LENGTH_SHORT).show()
+                }
+            }else{
+                it.exceptionOrNull()?.printStackTrace()
+            }
+        })
+
     }
 
     private fun toHome() {

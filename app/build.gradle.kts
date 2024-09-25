@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
 }
 kapt{
     generateStubs = true
@@ -26,6 +27,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86"))
+        }
+
+
     }
 
 
@@ -51,14 +57,17 @@ android {
 }
 
 dependencies {
-//    implementation  (libs.refresh.layout.kernel)   //核心必须依赖
-//    implementation  (libs.refresh.header.classics)   //经典刷新头
-//    implementation  (libs.refresh.header.radar)   //雷达刷新头
-//    implementation  (libs.refresh.header.falsify)   //虚拟刷新头
-//    implementation  (libs.refresh.header.material)   //谷歌刷新头
-//    implementation  (libs.refresh.header.two.level)   //二级刷新头
-//    implementation  (libs.refresh.footer.ball)   //球脉冲加载
-//    implementation  (libs.refresh.footer.classics)
+    //引入本地aar
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation(libs.baserecyclerviewadapterhelper)
+    implementation(libs.refresh.footer.ball)
+    implementation(libs.refresh.header.material)
+    implementation(libs.refresh.layout.kernel)
+    implementation(libs.glide)
+    implementation(libs.banner)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

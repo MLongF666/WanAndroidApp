@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="article"
+            type="com.mlf.wanandroid.model.response.Article" />
+        <variable
+            name="viewModel"
+            type="com.mlf.wanandroid.base.BaseViewModel" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLayout"
+            android:layout_centerInParent="true"
+            android:elevation="4dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:layout_margin="8dp"
+                        android:text='@{article.author==""?article.shareUser:article.author}'
+                        android:textSize="16sp"
+                        android:layout_alignParentStart="true"
+                        android:id="@+id/authorTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:layout_margin="8dp"
+                        android:text="@{article.superChapterName}"
+                        android:textSize="14sp"
+                        android:textColor="@color/design_default_color_primary_variant"
+                        android:layout_toEndOf="@+id/authorTextView"
+                        android:id="@+id/superTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:layout_margin="8dp"
+                        android:gravity="center"
+                        android:text="@{article.niceShareDate}"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/niceShareDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+                    <TextView
+
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textStyle="bold"
+                        android:layout_margin="8dp"
+                        android:text="@{article.title}"
+                        android:textSize="16sp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp">
+                    <TextView
+                        android:text='@{article.superChapterName+"·"+article.chapterName}'
+                        android:layout_margin="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:src="@{article.collect?@drawable/like_select:@drawable/like_fill}"
+                        android:id="@+id/zan"
+                        android:layout_margin="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+</layout>

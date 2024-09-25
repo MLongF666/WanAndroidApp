@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.mlf.wanandroid.viewmodel.LoginViewModel"/>
+            type="com.mlf.wanandroid.ui.user.LoginViewModel"/>
     </data>
     <LinearLayout
         android:id="@+id/main"
@@ -94,6 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"/>
                 <TextView
+                    android:textSize="18dp"
                     android:onClick="@{() -> viewModel.navigateToRegister()}"
                     android:gravity="center"
                     android:text="没有账号?点击注册"

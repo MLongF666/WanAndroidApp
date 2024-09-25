@@ -1,11 +1,14 @@
 [versions]
 agp = "8.6.0"
+baserecyclerviewadapterhelper = "3.0.7"
+crashreport = "latest.release"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+kotlinxCoroutinesCore = "1.7.3"
 material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
@@ -18,14 +21,13 @@ room = "2.6.1"
 retrofit="2.11.0"
 
 [libraries]
-glide = { group = "com.github.bumptech.glide", name = "glide", version = "4.16.1" }
+baserecyclerviewadapterhelper = { module = "com.github.CymChad:BaseRecyclerViewAdapterHelper", version.ref = "baserecyclerviewadapterhelper" }
+crashreport = { module = "com.tencent.bugly:crashreport", version.ref = "crashreport" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version = "4.15.1" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 refresh-footer-ball = { module = "io.github.scwang90:refresh-footer-ball", version.ref = "refreshLayoutKernel" }
-refresh-footer-classics = { module = "io.github.scwang90:refresh-footer-classics", version.ref = "refreshLayoutKernel" }
-refresh-header-classics = { module = "io.github.scwang90:refresh-header-classics", version.ref = "refreshLayoutKernel" }
-refresh-header-falsify = { module = "io.github.scwang90:refresh-header-falsify", version.ref = "refreshLayoutKernel" }
 refresh-header-material = { module = "io.github.scwang90:refresh-header-material", version.ref = "refreshLayoutKernel" }
-refresh-header-radar = { module = "io.github.scwang90:refresh-header-radar", version.ref = "refreshLayoutKernel" }
-refresh-header-two-level = { module = "io.github.scwang90:refresh-header-two-level", version.ref = "refreshLayoutKernel" }
 refresh-layout-kernel = { module = "io.github.scwang90:refresh-layout-kernel", version.ref = "refreshLayoutKernel" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
@@ -44,9 +46,10 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-
+banner = { group = "io.github.youth5201314", name = "banner", version = "2.2.3" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt" , version.ref = "kotlin"}
+kotlin-parcelize= { id = "org.jetbrains.kotlin.plugin.parcelize" , version.ref = "kotlin"}
 
