@@ -1,10 +1,10 @@
-package com.mlf.wanandroid.ui.home.home
+package com.mlf.wanandroid.ui.home
 
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +13,14 @@ import com.mlf.wanandroid.base.App
 import com.mlf.wanandroid.base.BaseFragment
 import com.mlf.wanandroid.databinding.BannerLayoutBinding
 import com.mlf.wanandroid.databinding.FragmentHomeArticleBinding
-import com.mlf.wanandroid.filter.showToast
 import com.mlf.wanandroid.model.bean.ArticleData
+import com.mlf.wanandroid.model.bean.PageData
 import com.mlf.wanandroid.model.response.Article
 import com.mlf.wanandroid.model.response.BannerData
 import com.mlf.wanandroid.ui.adapter.ArticleAdapter
 import com.mlf.wanandroid.ui.adapter.MyBannerAdapter
 import com.mlf.wanandroid.ui.webview.WebViewActivity
+import com.mlf.wanandroid.util.CodeModel.TYPE_CODE_HOME
 import com.scwang.smart.refresh.footer.BallPulseFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -27,19 +28,38 @@ import com.youth.banner.indicator.CircleIndicator
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
-class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticleViewModel>() {
+class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewModel>() {
     private val mBannerList=ArrayList<BannerData>()
     private val mBannerAdapter=MyBannerAdapter(mBannerList)
     private val articleList = ArrayList<Article>()
     private var page=0
     private val mAdapter by lazy { ArticleAdapter() }
     private var mBannerBinding:BannerLayoutBinding?=null
-    override fun getViewModelClass(): Class<HomeArticleViewModel> {
-        return HomeArticleViewModel::class.java
+    private var type:Int?=null
+
+
+    companion object{
+        fun newInstance(type: Int): ArticleFragment {
+            val bundle=Bundle()
+            bundle.putInt("type",type)
+            val fragment= ArticleFragment().apply { arguments=bundle }
+            return fragment
+        }
+    }
+    override fun getViewModelClass(): Class<ArticleViewModel> {
+        return ArticleViewModel::class.java
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments!=null){
+            type=arguments?.getInt("type")
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
+        initData()
         initRefresh()
         mBannerBinding = DataBindingUtil.inflate<BannerLayoutBinding>(
             layoutInflater,
@@ -57,7 +77,7 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
         getBinding().rvArticle.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mAdapter.apply {
-                if (!hasHeaderLayout()){
+                if (!hasHeaderLayout()&&type==TYPE_CODE_HOME){
                     mBannerBinding?.let { addHeaderView(it.root) }
                 }
                 addChildClickViewIds(R.id.zan, R.id.cardLayout)
@@ -69,13 +89,21 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
                                 //取消点赞
                                 getViewModel().unCollectArticle(mAdapter.getItem(position).id){
                                     mAdapter.getItem(position).collect=false
-                                    mAdapter.notifyItemChanged(position+1)
+                                    if (mAdapter.hasHeaderLayout()){
+                                        mAdapter.notifyItemChanged(position+1)
+                                    }else{
+                                        mAdapter.notifyItemChanged(position)
+                                    }
                                 }
                             }else{
                                 //点赞
                                 getViewModel().collectArticle(mAdapter.getItem(position).id){
                                     mAdapter.getItem(position).collect=true
-                                    mAdapter.notifyItemChanged(position+1)
+                                    if (mAdapter.hasHeaderLayout()){
+                                        mAdapter.notifyItemChanged(position+1)
+                                    }else{
+                                        mAdapter.notifyItemChanged(position)
+                                    }
                                 }
                             }
                         }
@@ -92,8 +120,19 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
             }
         }
         Log.d("articleList","$articleList")
+        mBannerAdapter.apply {
+            setOnItemClickListener(object : MyBannerAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, data: BannerData) {
+                    laucherToWebActivity(requireActivity(),WebViewActivity::class.java,data)
+                }
+            })
+        }
         //开始刷新
         getBinding().refreshLayout.autoRefresh()
+    }
+
+    private fun initData() {
+        PageData()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -103,7 +142,12 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
             for (position in mAdapter.data.indices){
                 if (mAdapter.getItem(position).id==it.id){
                     mAdapter.getItem(position).collect=it.collect
-                    mAdapter.notifyItemChanged(position+1)
+                    if (mAdapter.hasHeaderLayout()){
+                        mAdapter.notifyItemChanged(position+1)
+                    }else{
+                        mAdapter.notifyItemChanged(position)
+                    }
+
                     break
                 }
             }
@@ -122,17 +166,19 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
                 }
             }
         }
-        getViewModel().articleList.observe(this, Observer {
-            val response = it.getOrNull()
-            if (response!= null){
-                if (response.errorCode == 0){
-                    val datas = response.data.datas
-                    mAdapter.addData(datas)
-                }else{
-                    response.errorMsg.showToast(requireContext())
-                }
+        getViewModel().articleLiveData.observe(this){
+            if (it.isNotEmpty()){
+                Log.d("ArticleFragment", "articleList$it")
+                mAdapter.setList(it)
+                mAdapter.notifyDataSetChanged()
+            }else{
+                showEmpty()
             }
-        })
+        }
+    }
+
+    private fun showEmpty() {
+        mAdapter.setEmptyView(R.layout.layout_empty)
     }
 
 
@@ -148,15 +194,16 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
     }
     private fun onLoadMore(layout: RefreshLayout) {
         page++
-        getViewModel().loadArticleList(page)
+        getViewModel().loadArticleList(page,type)
         layout.finishLoadMore(500)
     }
 
     private fun onRefresh(refreshLayout: RefreshLayout) {
+        Log.d("onRefresh type:", "$type")
         if (page==0){
             getViewModel().fetchBanners()
         }
-        getViewModel().loadArticleList(page)
+        getViewModel().loadArticleList(page,type)
         refreshLayout.finishRefresh(500)
         page=0
     }
@@ -179,7 +226,9 @@ class HomeArticleFragment : BaseFragment<FragmentHomeArticleBinding, HomeArticle
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mAdapter.removeAllHeaderView()
+        if (mAdapter.hasHeaderLayout()){
+            mAdapter.removeAllHeaderView()
+        }
         Log.d("HomeArticleFragment","onDestroyView")
     }
 

@@ -19,6 +19,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.RoomDatabase
 import com.mlf.wanandroid.room.AppDatabase
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 
 /**
@@ -92,6 +95,7 @@ abstract class BaseActivity<V: ViewDataBinding, VM: ViewModel>:AppCompatActivity
         isHideTitle(true)
         initView()
         //默认隐藏
+        createObserve()
 
     }
     override fun onDestroy() {
@@ -113,6 +117,39 @@ abstract class BaseActivity<V: ViewDataBinding, VM: ViewModel>:AppCompatActivity
     }
     fun Int.showToast(context: Context, duration:Int = Toast.LENGTH_SHORT){
         Toast.makeText(context, this, duration).show()
+    }
+    /** 提供编写LiveData监听逻辑的方法 */
+    open fun createObserve() {
+        // 全局服务器请求错误监听
+//        mViewModel.apply {
+//            exception.observe(this@BaseVMBActivity) {
+//                requestError(it.message)
+//                LogUtil.e("网络请求错误：${it.message}")
+//                when (it) {
+//                    is SocketTimeoutException -> ToastUtil.showShort(
+//                        this@BaseVMBActivity,
+//                        getString(R.string.request_time_out)
+//                    )
+//
+//                    is ConnectException, is UnknownHostException -> ToastUtil.showShort(
+//                        this@BaseVMBActivity,
+//                        getString(R.string.network_error)
+//                    )
+//
+//                    else -> ToastUtil.showShort(
+//                        this@BaseVMBActivity, it.message ?: getString(R.string.response_error)
+//                    )
+//                }
+//            }
+//
+//            // 全局服务器返回的错误信息监听
+//            errorResponse.observe(this@BaseVMBActivity) {
+//                requestError(it?.errorMsg)
+//                it?.errorMsg?.run {
+//                    ToastUtil.showShort(this@BaseVMBActivity, this)
+//                }
+//            }
+//        }
     }
 
 }

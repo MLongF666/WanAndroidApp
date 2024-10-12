@@ -1,12 +1,13 @@
 package com.mlf.wanandroid.http
 
-import com.mlf.wanandroid.model.response.LoginResponse
-import com.mlf.wanandroid.model.response.RegisterResponse
-import okhttp3.OkHttpClient
+import android.graphics.pdf.PdfDocument.Page
+import com.mlf.wanandroid.model.response.Hotkey
+import com.mlf.wanandroid.model.bean.PageResponse
+import com.mlf.wanandroid.model.response.ApiResponse
+import com.mlf.wanandroid.model.response.Article
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.await
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -22,7 +23,7 @@ object HttpManage {
     suspend fun login(username: String, password: String)= service.login(username, password).await()
     suspend fun register(username: String, password: String, repassword: String)= service.register(username, password, repassword).await()
     suspend fun getBanner()= service.getBanner()
-    suspend fun getHomeArticleList(page: Int)= service.getHomeArticleList(page).await()
+    suspend fun getHomeArticleList(page: Int)= service.getHomeArticleList(page)
 
     suspend fun unCollectArticle(id: Int)= service.unCollectArticle(id)
     suspend fun collectArticle(id: Int)= service.collectArticle(id)
@@ -40,6 +41,18 @@ object HttpManage {
                 }
             })
         }
+    }
+
+    suspend fun getSquareArticleList(page: Int)= service.getSquareArticleList(page)
+    suspend fun getQaArticleList(page: Int): ApiResponse<PageResponse<Article>> {
+        return service.getQaArticleList(page)
+    }
+    suspend fun getHotKeyList(): ApiResponse<List<Hotkey>> {
+        return service.getHotKeyList()
+    }
+
+    suspend fun searchArticleList(content: String,page: Int): ApiResponse<PageResponse<Article>> {
+        return service.searchArticleList( page,content)
     }
 
 

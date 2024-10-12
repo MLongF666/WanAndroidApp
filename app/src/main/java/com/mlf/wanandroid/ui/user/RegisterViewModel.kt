@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import com.mlf.wanandroid.base.BaseViewModel
 import com.mlf.wanandroid.dao.UserRepository
-import com.mlf.wanandroid.model.User
+import com.mlf.wanandroid.room.entity.User
 
 
 class RegisterViewModel:BaseViewModel() {

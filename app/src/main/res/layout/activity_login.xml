@@ -7,66 +7,65 @@
             name="viewModel"
             type="com.mlf.wanandroid.ui.user.LoginViewModel"/>
     </data>
-    <LinearLayout
-        android:id="@+id/main"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.user.LoginActivity">
+        android:layout_height="match_parent">
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".ui.user.LoginActivity">
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/iv_logo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edit_bg"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
-                <ImageView
-                    android:scaleType="center"
-                    android:src="@drawable/baseline_drive_file_rename_outline_24"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-                <EditText
-                    android:background="@null"
-                    android:text="@={viewModel.userName}"
-                    android:layout_weight="3"
-                    android:hint="账号"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edit_bg"
-                android:layout_marginTop="50dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-                <ImageView
-                    android:scaleType="center"
-                    android:src="@drawable/lock_24px"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit_bg"
                     android:orientation="horizontal"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3">
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <ImageView
+                        android:scaleType="center"
+                        android:src="@drawable/baseline_drive_file_rename_outline_24"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:background="@null"
+                        android:text="@={viewModel.userName}"
+                        android:layout_weight="3"
+                        android:hint="账号"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit_bg"
+                    android:layout_marginTop="50dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <ImageView
+                        android:scaleType="center"
+                        android:src="@drawable/lock_24px"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3">
                         <EditText
                             android:background="@null"
                             android:inputType="textPassword"
@@ -75,32 +74,34 @@
                             android:hint="密码"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"/>
-                </LinearLayout>
+                    </LinearLayout>
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="50dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <Button
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/login_btn_bg"
-                    android:text="登录"
-                    android:id="@+id/btn_login"
-                    android:onClick="@{() -> viewModel.login()}"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"/>
-                <TextView
-                    android:textSize="18dp"
-                    android:onClick="@{() -> viewModel.navigateToRegister()}"
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:text="没有账号?点击注册"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"/>
+                    android:layout_height="100dp">
+                    <Button
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/login_btn_bg"
+                        android:text="登录"
+                        android:id="@+id/btn_login"
+                        android:onClick="@{() -> viewModel.login()}"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"/>
+                    <TextView
+                        android:textSize="18dp"
+                        android:onClick="@{() -> viewModel.navigateToRegister()}"
+                        android:gravity="center"
+                        android:text="没有账号?点击注册"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
+
 </layout>

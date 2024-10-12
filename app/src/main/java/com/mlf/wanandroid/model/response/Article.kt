@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 
-@Parcelize
+
 data class Article(
     val adminAdd: Boolean,
     val apkLink: String,
@@ -43,7 +43,5 @@ data class Article(
     val userId: Int,
     val visible: Int,
     val zan: Int,
-    val typeInt: Int=0,
-    val images:@RawValue ArrayList<BannerData>?=null,
-    var position: Int=0
-): Parcelable
+    val typeInt: Int=0
+)

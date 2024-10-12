@@ -1,5 +1,8 @@
 package com.mlf.wanandroid.model.response
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+@Parcelize
 data class BannerData(
     val desc: String,
     val id: Int,
@@ -9,4 +12,4 @@ data class BannerData(
     val title: String,
     val type: Int,
     val url: String
-)
+): Parcelable

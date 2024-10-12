@@ -57,6 +57,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
     //引入本地aar
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
     implementation("androidx.recyclerview:recyclerview:1.3.2")

@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mlf.wanandroid.BR
 import com.mlf.wanandroid.model.bean.ArticleData
 import com.mlf.wanandroid.model.bean.CollectData
+import com.mlf.wanandroid.model.response.BannerData
 
 
 /**
@@ -48,6 +49,13 @@ abstract class BaseFragment<V: ViewDataBinding, VM: ViewModel>: Fragment() {
     fun laucherToWebActivity(activity: Activity, clazz: Class<*>, articleData: ArticleData) {
         val intent = Intent(activity, clazz)
         intent.putExtra("articleData", articleData)
+        intent.putExtra("type",0)
+        activity.startActivity(intent)
+    }
+    fun laucherToWebActivity(activity: Activity, clazz: Class<*>, bannerData: BannerData) {
+        val intent = Intent(activity, clazz)
+        intent.putExtra("type",1)
+        intent.putExtra("bannerData", bannerData)
         activity.startActivity(intent)
     }
     override fun onStart() {

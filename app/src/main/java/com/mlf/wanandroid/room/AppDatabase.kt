@@ -5,9 +5,10 @@ import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mlf.wanandroid.model.User
-import com.mlf.wanandroid.model.response.Article
+import com.mlf.wanandroid.room.dao.HistorySearchDao
+import com.mlf.wanandroid.room.entity.User
 import com.mlf.wanandroid.room.dao.UserDao
+import com.mlf.wanandroid.room.entity.HistorySearch
 import kotlin.concurrent.Volatile
 
 /**
@@ -16,7 +17,7 @@ import kotlin.concurrent.Volatile
  * @date: 2024/9/12 14:36
  * @version: 1.0
  */
-@Database(entities = [User::class], version = 1,exportSchema = false)
+@Database(entities = [User::class, HistorySearch::class], version = 2,exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
     companion object{
         @Volatile
@@ -35,4 +36,5 @@ abstract class AppDatabase:RoomDatabase() {
         }
     }
     abstract fun getUserDao(): UserDao
+    abstract fun getHistorySearchDao(): HistorySearchDao
 }

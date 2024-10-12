@@ -1,4 +1,4 @@
-package com.mlf.wanandroid.model
+package com.mlf.wanandroid.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

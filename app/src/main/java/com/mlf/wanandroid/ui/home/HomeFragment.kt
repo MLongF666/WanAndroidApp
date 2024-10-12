@@ -1,5 +1,6 @@
 package com.mlf.wanandroid.ui.home
 
+import android.content.Intent
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -8,7 +9,8 @@ import com.mlf.wanandroid.R
 import com.mlf.wanandroid.base.BaseFragment
 import com.mlf.wanandroid.base.MyFragmentPagerAdapter
 import com.mlf.wanandroid.databinding.FragmentHomeBinding
-import com.mlf.wanandroid.ui.home.home.HomeArticleFragment
+import com.mlf.wanandroid.ui.search.SearchActivity
+import com.mlf.wanandroid.util.CodeModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
     private lateinit var tabLayout: TabLayout
@@ -18,13 +20,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
     }
     override fun initView() {
         listFragment = ArrayList()
-        listFragment.add(HomeArticleFragment())
-        listFragment.add(AskFragment())
-        listFragment.add(SquareFragment())
+        listFragment.add(ArticleFragment.newInstance(CodeModel.TYPE_CODE_HOME))
+        listFragment.add(ArticleFragment.newInstance(CodeModel.TYPE_CODE_SQUARE))
+        listFragment.add(ArticleFragment.newInstance(CodeModel.TYPE_CODE_QA))
         tabLayout = getBinding().tabLayout
         tabLayout.addTab(tabLayout.newTab().setText("首页"))
-        tabLayout.addTab(tabLayout.newTab().setText("问答"))
         tabLayout.addTab(tabLayout.newTab().setText("广场"))
+        tabLayout.addTab(tabLayout.newTab().setText("问答"))
         val viewPager = getBinding().viewPager
         val myFragmentPagerAdapter =
             MyFragmentPagerAdapter(childFragmentManager, lifecycle, listFragment)
@@ -46,6 +48,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
                 tabLayout.selectTab(tabLayout.getTabAt(position))
             }
         })
+        getBinding().openSearch.setOnClickListener {
+            startActivity(Intent(activity, SearchActivity::class.java))
+        }
     }
 
     override fun getLayoutId(): Int {

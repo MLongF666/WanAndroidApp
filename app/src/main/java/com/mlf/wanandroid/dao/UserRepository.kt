@@ -4,7 +4,7 @@ import android.util.Log
 import com.mlf.wanandroid.base.BaseApp
 
 import com.mlf.wanandroid.http.HttpManage
-import com.mlf.wanandroid.model.User
+import com.mlf.wanandroid.room.entity.User
 import kotlinx.coroutines.Dispatchers
 
 

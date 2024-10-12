@@ -2,6 +2,7 @@ package com.mlf.wanandroid.ui.webview
 
 import android.graphics.Bitmap
 import android.os.Build
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,16 +17,19 @@ import com.mlf.wanandroid.base.BaseActivity
 import com.mlf.wanandroid.databinding.ActivityWebViewBinding
 import com.mlf.wanandroid.model.bean.ArticleData
 import com.mlf.wanandroid.model.bean.CollectData
+import com.mlf.wanandroid.model.response.BannerData
 
 class WebViewActivity : BaseActivity<ActivityWebViewBinding, WebViewViewModel>() {
 	companion object{
 		const val ARTICLEDATA = "articleData"
+		const val BANNERDATA = "bannerData"
 	}
 	private var article:ArticleData? = null
 	private var mUrl:String? = null
 	private var mTitle:String? = null
 	private var mIsCollect:Boolean = false
 	private var mArticleId:Int = 0
+	private var isArticle = false
 	@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 	override fun initView() {
 		getData()
@@ -62,26 +66,39 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding, WebViewViewModel>()
 		supportActionBar?.apply {
 			setDisplayHomeAsUpEnabled(true)
 			mTitle?.let {
-				supportActionBar?.title = it
+				title = it
 				//设置颜色
-				supportActionBar?.setDisplayShowTitleEnabled(true)
+				setDisplayShowTitleEnabled(true)
 			}
 			//设置icon点击事件
-			supportActionBar?.setHomeButtonEnabled(true)
-			supportActionBar?.setIcon(R.drawable.baseline_more_vert_24)
+			setHomeButtonEnabled(true)
+			setIcon(R.drawable.baseline_more_vert_24)
 		}
 	}
 
 	@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 	private fun getData() {
 		intent.apply {
-			article = getParcelableExtra<ArticleData>(ARTICLEDATA)
-			if (article != null) {
-				mUrl = article!!.link
-				mTitle = article!!.title
-				mIsCollect = article!!.collect
-				mArticleId = article!!.id
+			val i = getIntExtra("type", 0)
+			Log.d("WebViewActivity", "type:$i")
+			if (i==0){
+				article = getParcelableExtra<ArticleData>(ARTICLEDATA)
+				if (article != null) {
+					mUrl = article!!.link
+					mTitle = article!!.title
+					mIsCollect = article!!.collect
+					mArticleId = article!!.id
+					isArticle = true
+				}
+			}else{
+				val data = getParcelableExtra<BannerData>(BANNERDATA)
+				isArticle = false
+				if (data != null){
+					mUrl = data.url
+					mTitle = data.title
+				}
 			}
+
 		}
 	}
 
@@ -91,10 +108,15 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding, WebViewViewModel>()
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-		menu?.findItem(R.id.collect)?.icon = ContextCompat.getDrawable(
-			this,
-			if (mIsCollect) R.drawable.like_select else R.drawable.like_fill
-		)
+		val collectItem = menu?.findItem(R.id.collect)
+		if (isArticle){
+			collectItem?.icon = ContextCompat.getDrawable(
+				this,
+				if (mIsCollect) R.drawable.like_select else R.drawable.like_fill
+			)
+		}else{
+			collectItem?.isVisible = false
+		}
 		return super.onPrepareOptionsMenu(menu)
 	}
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -123,7 +145,6 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding, WebViewViewModel>()
 				true
 			}
 			R.id.web_select -> {
-
 				"选择".showToast(this)
 				true
 			}
