@@ -10,13 +10,13 @@ import com.mlf.wanandroid.databinding.FragmentMineBinding
  * @date: 2024/9/6 15:44
  * @version: 1.0
  */
-class MineFragment: BaseFragment<FragmentMineBinding, MineViewModel>() {
+class MineFragment : BaseFragment<FragmentMineBinding, MineViewModel>() {
     override fun getViewModelClass(): Class<MineViewModel> {
         return MineViewModel::class.java
     }
 
     override fun initView() {
-        getBinding().tv.text=getViewModel().text.value
+        getBinding().tv.text = getViewModel().text.value
     }
 
     override fun getLayoutId(): Int {

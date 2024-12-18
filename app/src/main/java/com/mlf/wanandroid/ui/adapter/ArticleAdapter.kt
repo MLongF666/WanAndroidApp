@@ -16,6 +16,9 @@ class ArticleAdapter:BaseQuickAdapter<Article,BaseDataBindingHolder<ArticleItemB
 	}
 	override fun convert(holder: BaseDataBindingHolder<ArticleItemBinding>, item: Article) {
 		holder.dataBinding?.apply {
+			if (item.author=="" || item.author=="null"){
+				item.author=item.shareUser
+			}
 			article=item
 			executePendingBindings()
 		}

@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 
 import com.mlf.wanandroid.base.BaseViewModel
 
-class ProjectViewModel: BaseViewModel() {
-    private val _text=MutableLiveData<String>().apply {
-        value="This is project Fragment"
+class ProjectViewModel : BaseViewModel() {
+    private val _text = MutableLiveData<String>().apply {
+        value = "项目"
     }
-    val text:MutableLiveData<String> = _text
+    val text: MutableLiveData<String> = _text
 
 }

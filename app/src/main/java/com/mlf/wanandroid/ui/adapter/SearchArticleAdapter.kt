@@ -7,11 +7,12 @@ import com.mlf.wanandroid.R
 import com.mlf.wanandroid.databinding.ArticleItemBinding
 import com.mlf.wanandroid.model.response.Article
 
-class SearchArticleAdapter: BaseQuickAdapter<Article, BaseDataBindingHolder<ArticleItemBinding>>(R.layout.article_item),
-	LoadMoreModule {
-	override fun convert(holder: BaseDataBindingHolder<ArticleItemBinding>, item: Article) {
-		holder.dataBinding?.apply {
-			article=item
-		}
-	}
+class SearchArticleAdapter :
+    BaseQuickAdapter<Article, BaseDataBindingHolder<ArticleItemBinding>>(R.layout.article_item),
+    LoadMoreModule {
+    override fun convert(holder: BaseDataBindingHolder<ArticleItemBinding>, item: Article) {
+        holder.dataBinding?.apply {
+            article = item
+        }
+    }
 }

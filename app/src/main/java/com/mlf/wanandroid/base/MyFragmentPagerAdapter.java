@@ -18,11 +18,13 @@ import java.util.List;
  */
 public class MyFragmentPagerAdapter extends FragmentStateAdapter {
     ArrayList<Fragment> fragmentList = new ArrayList<>();
+
     public MyFragmentPagerAdapter(FragmentManager fragmentManager, Lifecycle lifecycle, ArrayList<Fragment> listFragment) {
         super(fragmentManager, lifecycle);
         this.fragmentList = listFragment;
 
     }
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {

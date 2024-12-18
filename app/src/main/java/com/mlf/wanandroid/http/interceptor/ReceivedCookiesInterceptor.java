@@ -30,7 +30,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             //解析Cookie
             HashSet<String> cookies = new HashSet<>(originalResponse.headers("Set-Cookie"));
-            Shape.setStringSet("cookie",cookies);
+            Shape.setStringSet("cookie", cookies);
         }
         Log.d("ReceivedCookiesInterceptor", "ReceivedCookiesInterceptor: " + NetClient.COOKIE);
         return originalResponse;

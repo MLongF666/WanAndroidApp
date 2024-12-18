@@ -2,6 +2,7 @@ package com.mlf.wanandroid.ui.home
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -12,12 +13,13 @@ import com.mlf.wanandroid.databinding.FragmentHomeBinding
 import com.mlf.wanandroid.ui.search.SearchActivity
 import com.mlf.wanandroid.util.CodeModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private lateinit var tabLayout: TabLayout
     private lateinit var listFragment: ArrayList<Fragment>
     override fun getViewModelClass(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
+
     override fun initView() {
         listFragment = ArrayList()
         listFragment.add(ArticleFragment.newInstance(CodeModel.TYPE_CODE_HOME))
@@ -31,9 +33,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
         val myFragmentPagerAdapter =
             MyFragmentPagerAdapter(childFragmentManager, lifecycle, listFragment)
         viewPager.adapter = myFragmentPagerAdapter
+        //初始化就加载三个避免bug
+        viewPager.offscreenPageLimit = 3
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                    viewPager.currentItem = tab!!.position
+                viewPager.currentItem = tab!!.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -59,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(){
 
     override fun onStop() {
         super.onStop()
-        Log.d("HomeFragment","onStop")
+        Log.d("HomeFragment", "onStop")
     }
 
 }

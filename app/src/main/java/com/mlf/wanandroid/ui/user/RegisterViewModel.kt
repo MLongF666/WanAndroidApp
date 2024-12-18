@@ -8,39 +8,48 @@ import com.mlf.wanandroid.dao.UserRepository
 import com.mlf.wanandroid.room.entity.User
 
 
-class RegisterViewModel:BaseViewModel() {
-    private var _toLogin:MutableLiveData<Boolean> = MutableLiveData()
-    val toLogin:MutableLiveData<Boolean>
+class RegisterViewModel : BaseViewModel() {
+    private var _toLogin: MutableLiveData<Boolean> = MutableLiveData()
+    val toLogin: MutableLiveData<Boolean>
         get() = _toLogin
-    private var user:MutableLiveData<User> = MutableLiveData()
-    private val userLiveData:MutableLiveData<User> = MutableLiveData()
-    val registerResponse=userLiveData.switchMap {
+    private var user: MutableLiveData<User> = MutableLiveData()
+    private val userLiveData: MutableLiveData<User> = MutableLiveData()
+    val registerResponse = userLiveData.switchMap {
         UserRepository.register(it.username, it.password, it.repassword)
     }
+
     init {
         user.value = User()
     }
+
     fun register() {
         userLiveData.value = user.value
     }
-    fun getUserName():String?{
+
+    fun getUserName(): String? {
         return user.value?.username
     }
-    fun setUserName(username:String){
-        user.value?.username=username
+
+    fun setUserName(username: String) {
+        user.value?.username = username
     }
-    fun getPassword():String?{
+
+    fun getPassword(): String? {
         return user.value?.password
     }
-    fun setPassword(password:String){
-        user.value?.password=password
+
+    fun setPassword(password: String) {
+        user.value?.password = password
     }
-    fun getRepassword():String?{
+
+    fun getRepassword(): String? {
         return user.value?.repassword
     }
-    fun setRepassword(repassword:String){
-        user.value?.repassword=repassword
+
+    fun setRepassword(repassword: String) {
+        user.value?.repassword = repassword
     }
+
     fun toLogin() {
         _toLogin.value = true
     }

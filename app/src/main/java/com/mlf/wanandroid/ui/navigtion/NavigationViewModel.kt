@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 
 import com.mlf.wanandroid.base.BaseViewModel
 
-class NavigationViewModel :BaseViewModel(){
+class NavigationViewModel : BaseViewModel() {
     private val _text = MutableLiveData<String>().apply {
-        value = "This is navigation Fragment"
+        value = "导航"
     }
     val text: LiveData<String> = _text
 

@@ -10,7 +10,7 @@ class OfficialFragment : BaseFragment<FragmentOfficialBinding, OfficialViewModel
     }
 
     override fun initView() {
-        getBinding().text.text=getViewModel().text.value
+        getBinding().text.text = getViewModel().text.value
     }
 
     override fun getLayoutId(): Int {

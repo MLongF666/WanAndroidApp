@@ -1,17 +1,14 @@
 package com.mlf.wanandroid.model.response
 
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-
 
 
 data class Article(
     val adminAdd: Boolean,
     val apkLink: String,
     val audit: Int,
-    val author: String,
+    var author: String,
     val canEdit: Boolean,
     val chapterId: Int,
     val chapterName: String,
@@ -37,11 +34,11 @@ data class Article(
     val shareUser: String,
     val superChapterId: Int,
     val superChapterName: String,
-    val tags:@RawValue ArrayList<Tag>?=null,
+    val tags: @RawValue ArrayList<Tag>? = null,
     val title: String,
     val type: Int,
     val userId: Int,
     val visible: Int,
     val zan: Int,
-    val typeInt: Int=0
+    val typeInt: Int = 0
 )

@@ -26,10 +26,10 @@ public class AddCookiesInterceptor implements Interceptor {
     public Response intercept(Interceptor.Chain chain) throws IOException {
         final Request.Builder builder = chain.request().newBuilder();
         //添加Cookie
-        Set<String> cookies = Shape.getSetString("cookie",null);
-        if (cookies!=null){
-            for (String string:cookies) {
-                builder.addHeader("Cookie",string);
+        Set<String> cookies = Shape.getSetString("cookie", null);
+        if (cookies != null) {
+            for (String string : cookies) {
+                builder.addHeader("Cookie", string);
             }
         }
         return chain.proceed(builder.build());

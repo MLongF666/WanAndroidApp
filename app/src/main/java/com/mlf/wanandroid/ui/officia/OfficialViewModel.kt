@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 
 import com.mlf.wanandroid.base.BaseViewModel
 
-class OfficialViewModel:BaseViewModel() {
+class OfficialViewModel : BaseViewModel() {
     private val _text = MutableLiveData<String>().apply {
-        value = "This is official Fragment"
+        value = "公众号"
     }
     val text: LiveData<String> = _text
 

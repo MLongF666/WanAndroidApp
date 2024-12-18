@@ -19,14 +19,18 @@ import kotlin.coroutines.suspendCoroutine
  * @version: 1.0
  */
 object HttpManage {
-    private val service=ServiceCreator.create<WanAndroidService>()
-    suspend fun login(username: String, password: String)= service.login(username, password).await()
-    suspend fun register(username: String, password: String, repassword: String)= service.register(username, password, repassword).await()
-    suspend fun getBanner()= service.getBanner()
-    suspend fun getHomeArticleList(page: Int)= service.getHomeArticleList(page)
+    private val service = ServiceCreator.create<WanAndroidService>()
+    suspend fun login(username: String, password: String) =
+        service.login(username, password).await()
 
-    suspend fun unCollectArticle(id: Int)= service.unCollectArticle(id)
-    suspend fun collectArticle(id: Int)= service.collectArticle(id)
+    suspend fun register(username: String, password: String, repassword: String) =
+        service.register(username, password, repassword).await()
+
+    suspend fun getBanner() = service.getBanner()
+    suspend fun getHomeArticleList(page: Int) = service.getHomeArticleList(page)
+
+    suspend fun unCollectArticle(id: Int) = service.unCollectArticle(id)
+    suspend fun collectArticle(id: Int) = service.collectArticle(id)
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
             enqueue(object : Callback<T> {
@@ -43,16 +47,17 @@ object HttpManage {
         }
     }
 
-    suspend fun getSquareArticleList(page: Int)= service.getSquareArticleList(page)
+    suspend fun getSquareArticleList(page: Int) = service.getSquareArticleList(page)
     suspend fun getQaArticleList(page: Int): ApiResponse<PageResponse<Article>> {
         return service.getQaArticleList(page)
     }
+
     suspend fun getHotKeyList(): ApiResponse<List<Hotkey>> {
         return service.getHotKeyList()
     }
 
-    suspend fun searchArticleList(content: String,page: Int): ApiResponse<PageResponse<Article>> {
-        return service.searchArticleList( page,content)
+    suspend fun searchArticleList(content: String, page: Int): ApiResponse<PageResponse<Article>> {
+        return service.searchArticleList(page, content)
     }
 
 

@@ -1,22 +1,18 @@
 package com.mlf.wanandroid.base
 
 
+import android.text.style.LineHeightSpan.WithDensity
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.mlf.wanandroid.dao.ArticleRepository
 import com.mlf.wanandroid.model.response.ApiResponse
-import com.mlf.wanandroid.model.response.Article
-import com.mlf.wanandroid.model.response.BannerData
-import com.mlf.wanandroid.model.response.CollectResponse
 import com.mlf.wanandroid.util.SingleLiveData
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -27,17 +23,22 @@ import kotlinx.coroutines.launch
  */
 open class BaseViewModel: ViewModel() {
 	/** 请求异常（服务器请求失败，譬如：服务器连接超时等） */
-	val exception = MutableLiveData<Exception>()
+	val exception = SingleLiveData<Exception>()
 
 	/** 请求服务器返回错误（服务器请求成功但status错误，譬如：登录过期等） */
-	val errorResponse = MutableLiveData<ApiResponse<*>?>()
+	val errorResponse = SingleLiveData<ApiResponse<*>?>()
 
 
 	fun collectArticle(id: Int, successCallBack: () -> Any? = {}) {
 		launch({
 			handleRequest(ArticleRepository.collectArticle(id), {
 				successCallBack.invoke()
+				Log.d("BaseViewModel", "collectArticle success: $this")
 			})
+		},{
+			exception.value.apply {
+				Log.e("BaseViewModel", "collectArticle exception: $this")
+			}
 		})
 	}
 
@@ -47,9 +48,9 @@ open class BaseViewModel: ViewModel() {
 	 */
 	fun unCollectArticle(id: Int, successCallBack: () -> Any? = {}) {
 		launch({
-			handleRequest(ArticleRepository.uncollect(id), {
+			handleRequest(ArticleRepository.uncollected(id), {
 				successCallBack.invoke()
-			})
+			},)
 		})
 	}
 
@@ -59,7 +60,7 @@ open class BaseViewModel: ViewModel() {
 		finallyBlock: suspend CoroutineScope.() -> Unit = {}
 	) {
 		// 默认是执行在主线程，相当于launch(Dispatchers.Main)
-		viewModelScope.launch {
+		viewModelScope.launch(Dispatchers.IO) {
 			try {
 				tryBlock()
 			} catch (e: Exception) {
@@ -76,7 +77,7 @@ open class BaseViewModel: ViewModel() {
 		successBlock: suspend CoroutineScope.(response: ApiResponse<T>) -> Unit = {},
 		errorBlock: suspend CoroutineScope.(response: ApiResponse<T>) -> Boolean = { false }
 	) {
-		viewModelScope.launch {
+		viewModelScope.launch(Dispatchers.Main) {
 			when (response.errorCode) {
 				0 -> successBlock(response) // 服务器返回请求成功码
 				else -> { // 服务器返回的其他错误码

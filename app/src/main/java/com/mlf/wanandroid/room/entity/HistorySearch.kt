@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "history_search")
 data class HistorySearch(
-	@PrimaryKey(autoGenerate = true)
-	val id: Int,
-	@ColumnInfo(name = "search_content")
-	val content: String
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    @ColumnInfo(name = "search_content")
+    val content: String
 )

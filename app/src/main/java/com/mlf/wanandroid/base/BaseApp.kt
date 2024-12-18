@@ -15,23 +15,27 @@ import com.mlf.wanandroid.util.Shape
  * @date: 2024/9/6 16:38
  * @version: 1.0
  */
-open  class BaseApp:Application(),ViewModelStoreOwner {
+open class BaseApp : Application(), ViewModelStoreOwner {
     private var mFactory: ViewModelProvider.Factory? = null
     private lateinit var mAppViewModelStore: ViewModelStore
-    companion object{
+
+    companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }
+
     override fun onCreate() {
         super.onCreate()
-        context=applicationContext
+        context = applicationContext
         mAppViewModelStore = ViewModelStore()
         BaseRepository.initialize(this)
         Shape.init(this)
     }
+
     fun getAppViewModelProvider(): ViewModelProvider {
         return ViewModelProvider(this, getAppViewModelFactory())
     }
+
     private fun getAppViewModelFactory(): ViewModelProvider.Factory {
         if (mFactory == null) {
             mFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(this)

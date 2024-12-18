@@ -10,7 +10,7 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectViewModel>()
     }
 
     override fun initView() {
-        getBinding().textView.text=getViewModel().text.value
+        getBinding().textView.text = getViewModel().text.value
     }
 
     override fun getLayoutId(): Int {

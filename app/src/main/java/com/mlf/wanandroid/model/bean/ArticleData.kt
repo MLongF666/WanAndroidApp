@@ -5,7 +5,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class ArticleData(var id: Int = 0,
-				  var link: String = "",
-				  var title: String="",
-				  var collect: Boolean = false): Parcelable
+class ArticleData(
+    var id: Int = 0,
+    var link: String = "",
+    var title: String = "",
+    var collect: Boolean = false
+) : Parcelable

@@ -36,7 +36,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:layout_margin="8dp"
-                        android:text='@{article.author==""?article.shareUser:article.author}'
+                        android:text="@{article.author}"
                         android:textSize="16sp"
                         android:layout_alignParentStart="true"
                         android:id="@+id/authorTextView"

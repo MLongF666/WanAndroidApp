@@ -12,14 +12,14 @@ import androidx.viewbinding.ViewBinding
  * @date: 2024/9/6 11:22
  * @version: 1.0
  */
-open class CommonViewHolder(itemView: View):
+open class CommonViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var binding: ViewDataBinding? = null
         fun getViewHolder(viewBinding: ViewDataBinding): CommonViewHolder {
-            binding=viewBinding
+            binding = viewBinding
             //在这里进行视图的加载
             val viewHolder = CommonViewHolder(
                 viewBinding.root
@@ -27,6 +27,7 @@ open class CommonViewHolder(itemView: View):
             return viewHolder
         }
     }
+
     fun getBinding(): ViewDataBinding? {
         return binding
     }

@@ -9,6 +9,7 @@ import com.mlf.wanandroid.room.entity.User
 interface UserDao {
     @Insert()
     fun insertUser(user: User)
+
     @Query("SELECT * FROM user where username=(:userName)")
     fun getUser(userName: String): User?
 

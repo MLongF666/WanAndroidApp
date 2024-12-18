@@ -12,20 +12,19 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding, RegisterViewModel
         getBinding().registerViewModel = getViewModel()
         getViewModel().registerResponse.observe(this, Observer {
             val response = it.getOrNull()
-            if (response!= null){
-                if (response.errorCode == 0){
+            if (response != null) {
+                if (response.errorCode == 0) {
                     Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show()
                     toLogin()
-                }else{
+                } else {
                     Toast.makeText(this, response.errorMsg, Toast.LENGTH_SHORT).show()
                 }
-            }
-            else{
+            } else {
                 it.exceptionOrNull()?.printStackTrace()
             }
         })
         getViewModel().toLogin.observe(this, Observer {
-            if (it){
+            if (it) {
                 toLogin()
                 getViewModel().toLogin.value = false
             }

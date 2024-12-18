@@ -29,31 +29,34 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
 class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewModel>() {
-    private val mBannerList=ArrayList<BannerData>()
-    private val mBannerAdapter=MyBannerAdapter(mBannerList)
+    private val mBannerList = ArrayList<BannerData>()
+    private val mBannerAdapter = MyBannerAdapter(mBannerList)
     private val articleList = ArrayList<Article>()
-    private var page=0
+    private var page = 0
     private val mAdapter by lazy { ArticleAdapter() }
-    private var mBannerBinding:BannerLayoutBinding?=null
-    private var type:Int?=null
+    private var mBannerBinding: BannerLayoutBinding? = null
+    private var type: Int? = null
+    private var isRefresh = true
+    private val TAG = "ArticleFragment"
 
 
-    companion object{
+    companion object {
         fun newInstance(type: Int): ArticleFragment {
-            val bundle=Bundle()
-            bundle.putInt("type",type)
-            val fragment= ArticleFragment().apply { arguments=bundle }
+            val bundle = Bundle()
+            bundle.putInt("type", type)
+            val fragment = ArticleFragment().apply { arguments = bundle }
             return fragment
         }
     }
+
     override fun getViewModelClass(): Class<ArticleViewModel> {
         return ArticleViewModel::class.java
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments!=null){
-            type=arguments?.getInt("type")
+        if (arguments != null) {
+            type = arguments?.getInt("type")
         }
     }
 
@@ -69,66 +72,77 @@ class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewMode
         ).apply {
             banner.apply {
                 setAdapter(mBannerAdapter)
-                indicator =CircleIndicator(context)
+                indicator = CircleIndicator(context)
                 addBannerLifecycleObserver(viewLifecycleOwner)
             }
         }
-
         getBinding().rvArticle.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mAdapter.apply {
-                if (!hasHeaderLayout()&&type==TYPE_CODE_HOME){
+                if (!hasHeaderLayout() && type == TYPE_CODE_HOME) {
                     mBannerBinding?.let { addHeaderView(it.root) }
                 }
                 addChildClickViewIds(R.id.zan, R.id.cardLayout)
-                setOnItemChildClickListener {
-                    _,view,position->
-                    when(view.id){
-                        R.id.zan->{
-                            if (mAdapter.getItem(position).collect){
+                setOnItemChildClickListener { _, view, position ->
+                    when (view.id) {
+                        R.id.zan -> {
+                            Log.d("zan", "zan")
+                            if (mAdapter.getItem(position).collect) {
                                 //取消点赞
-                                getViewModel().unCollectArticle(mAdapter.getItem(position).id){
-                                    mAdapter.getItem(position).collect=false
-                                    if (mAdapter.hasHeaderLayout()){
-                                        mAdapter.notifyItemChanged(position+1)
-                                    }else{
+                                getViewModel().unCollectArticle(mAdapter.getItem(position).id) {
+                                    mAdapter.getItem(position).collect = false
+                                    if (mAdapter.hasHeaderLayout()) {
+                                        mAdapter.notifyItemChanged(position + 1)
+                                    } else {
                                         mAdapter.notifyItemChanged(position)
                                     }
                                 }
-                            }else{
+                            } else {
                                 //点赞
-                                getViewModel().collectArticle(mAdapter.getItem(position).id){
-                                    mAdapter.getItem(position).collect=true
-                                    if (mAdapter.hasHeaderLayout()){
-                                        mAdapter.notifyItemChanged(position+1)
-                                    }else{
+                                getViewModel().collectArticle(mAdapter.getItem(position).id) {
+                                    mAdapter.getItem(position).collect = true
+                                    if (mAdapter.hasHeaderLayout()) {
+                                        mAdapter.notifyItemChanged(position + 1)
+                                    } else {
                                         mAdapter.notifyItemChanged(position)
                                     }
                                 }
                             }
                         }
-                        R.id.cardLayout->{
-                            val article=mAdapter.getItem(position)
-                            val articleData = ArticleData(article.id, article.link,article.title, article.collect)
-                            laucherToWebActivity(requireActivity(),WebViewActivity::class.java,articleData)
+
+                        R.id.cardLayout -> {
+                            val article = mAdapter.getItem(position)
+                            val articleData = ArticleData(
+                                article.id,
+                                article.link,
+                                article.title,
+                                article.collect
+                            )
+                            laucherToWebActivity(
+                                requireActivity(),
+                                WebViewActivity::class.java,
+                                articleData
+                            )
                         }
-                        else->{
+
+                        else -> {
                             return@setOnItemChildClickListener
                         }
                     }
                 }
             }
         }
-        Log.d("articleList","$articleList")
+        Log.d("articleList", "$articleList")
         mBannerAdapter.apply {
             setOnItemClickListener(object : MyBannerAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, data: BannerData) {
-                    laucherToWebActivity(requireActivity(),WebViewActivity::class.java,data)
+                    laucherToWebActivity(requireActivity(), WebViewActivity::class.java, data)
                 }
             })
         }
         //开始刷新
         getBinding().refreshLayout.autoRefresh()
+        Log.d(TAG, "initData")
     }
 
     private fun initData() {
@@ -136,15 +150,15 @@ class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewMode
     }
 
     @SuppressLint("NotifyDataSetChanged")
-	override fun createObserve() {
+    override fun createObserve() {
         super.createObserve()
-        App.appViewModel.collectEvent.observe(this){
-            for (position in mAdapter.data.indices){
-                if (mAdapter.getItem(position).id==it.id){
-                    mAdapter.getItem(position).collect=it.collect
-                    if (mAdapter.hasHeaderLayout()){
-                        mAdapter.notifyItemChanged(position+1)
-                    }else{
+        App.appViewModel.collectEvent.observe(this) {
+            for (position in mAdapter.data.indices) {
+                if (mAdapter.getItem(position).id == it.id) {
+                    mAdapter.getItem(position).collect = it.collect
+                    if (mAdapter.hasHeaderLayout()) {
+                        mAdapter.notifyItemChanged(position + 1)
+                    } else {
                         mAdapter.notifyItemChanged(position)
                     }
 
@@ -166,12 +180,16 @@ class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewMode
                 }
             }
         }
-        getViewModel().articleLiveData.observe(this){
-            if (it.isNotEmpty()){
+        getViewModel().articleLiveData.observe(this) {
+            if (it.isNotEmpty()) {
                 Log.d("ArticleFragment", "articleList$it")
-                mAdapter.setList(it)
+                if (isRefresh) {
+                    mAdapter.setList(it)
+                } else {
+                    mAdapter.addData(it)
+                }
                 mAdapter.notifyDataSetChanged()
-            }else{
+            } else {
                 showEmpty()
             }
         }
@@ -192,20 +210,23 @@ class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewMode
             onLoadMore(it)
         }
     }
+
     private fun onLoadMore(layout: RefreshLayout) {
-        page++
-        getViewModel().loadArticleList(page,type)
+        ++page
+        getViewModel().loadArticleList(page, type)
         layout.finishLoadMore(500)
+        isRefresh = false
     }
 
     private fun onRefresh(refreshLayout: RefreshLayout) {
         Log.d("onRefresh type:", "$type")
-        if (page==0){
+        if (page == 0) {
             getViewModel().fetchBanners()
         }
-        getViewModel().loadArticleList(page,type)
+        getViewModel().loadArticleList(page, type)
         refreshLayout.finishRefresh(500)
-        page=0
+        isRefresh = true
+        page = 0
     }
 
     override fun getLayoutId(): Int {
@@ -215,25 +236,25 @@ class ArticleFragment : BaseFragment<FragmentHomeArticleBinding, ArticleViewMode
     override fun onDestroy() {
         super.onDestroy()
 
-        Log.d("HomeArticleFragment","onDestroy")
+        Log.d("HomeArticleFragment", "onDestroy")
     }
 
     @SuppressLint("NotifyDataSetChanged")
-	override fun onStop() {
+    override fun onStop() {
         super.onStop()
-        Log.d("HomeArticleFragment","onStop")
+        Log.d("HomeArticleFragment", "onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (mAdapter.hasHeaderLayout()){
+        if (mAdapter.hasHeaderLayout()) {
             mAdapter.removeAllHeaderView()
         }
-        Log.d("HomeArticleFragment","onDestroyView")
+        Log.d("HomeArticleFragment", "onDestroyView")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("HomeArticleFragment","onResume")
+        Log.d("HomeArticleFragment", "onResume")
     }
 }

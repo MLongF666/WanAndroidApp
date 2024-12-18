@@ -1,6 +1,5 @@
 package com.mlf.wanandroid.dao
 
-import android.util.Log
 import com.mlf.wanandroid.http.HttpManage
 import com.mlf.wanandroid.model.bean.PageResponse
 import com.mlf.wanandroid.model.response.ApiResponse
@@ -18,11 +17,11 @@ object ArticleRepository {
         return HttpManage.getBanner()
     }
 
-        suspend fun collectArticle(id: Int):ApiResponse<Any?>{
-            Log.d("LoginRepository", "collectArticle id: $id")
+    suspend fun collectArticle(id: Int): ApiResponse<Any?> {
         return HttpManage.collectArticle(id)
     }
-    suspend fun uncollect(id: Int):ApiResponse<Any?>{
+
+    suspend fun uncollected(id: Int): ApiResponse<Any?> {
         return HttpManage.unCollectArticle(id)
     }
 

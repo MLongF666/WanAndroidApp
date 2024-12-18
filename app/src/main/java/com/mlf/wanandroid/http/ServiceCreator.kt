@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * @date: 2024/9/7 20:28
  * @version: 1.0
  */
-object  ServiceCreator {
+object ServiceCreator {
     private const val baseUrl: String = "https://www.wanandroid.com/"
 
     private var retrofit: Retrofit = Retrofit.Builder()

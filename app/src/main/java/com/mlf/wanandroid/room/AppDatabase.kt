@@ -17,24 +17,28 @@ import kotlin.concurrent.Volatile
  * @date: 2024/9/12 14:36
  * @version: 1.0
  */
-@Database(entities = [User::class, HistorySearch::class], version = 2,exportSchema = false)
-abstract class AppDatabase:RoomDatabase() {
-    companion object{
+@Database(entities = [User::class, HistorySearch::class], version = 2, exportSchema = false)
+abstract class AppDatabase : RoomDatabase() {
+    companion object {
         @Volatile
         private var mAppDatabase: AppDatabase? = null
+
         // 单例模式
         fun getInstance(context: Context): AppDatabase {
             if (mAppDatabase == null) {
                 synchronized(AppDatabase::class.java) {
                     if (mAppDatabase == null) {
                         Log.d("AppDatabase", "Creating database")
-                        mAppDatabase =Room.databaseBuilder(context, AppDatabase::class.java, "wanAndroid.db").build()
+                        mAppDatabase =
+                            Room.databaseBuilder(context, AppDatabase::class.java, "wanAndroid.db")
+                                .build()
                     }
                 }
             }
             return mAppDatabase!!
         }
     }
+
     abstract fun getUserDao(): UserDao
     abstract fun getHistorySearchDao(): HistorySearchDao
 }

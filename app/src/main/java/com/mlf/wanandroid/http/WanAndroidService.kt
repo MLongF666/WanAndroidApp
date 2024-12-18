@@ -21,24 +21,43 @@ import retrofit2.http.Query
  */
 interface WanAndroidService {
     @POST("user/login")
-    fun login(@Query("username") username: String,@Query("password") password: String): Call<LoginResponse>
+    fun login(
+        @Query("username") username: String,
+        @Query("password") password: String
+    ): Call<LoginResponse>
+
     @POST("user/register")
-    fun register(@Query("username")username: String,@Query("password") password: String,@Query("repassword") repassword: String): Call<RegisterResponse>
+    fun register(
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("repassword") repassword: String
+    ): Call<RegisterResponse>
+
     @GET("article/list/{page}/json")
     suspend fun getHomeArticleList(@Path("page") page: Int): ApiResponse<PageResponse<Article>>
+
     @GET("banner/json")
     suspend fun getBanner(): ApiResponse<List<BannerData>>
+
     @POST("lg/collect/{id}/json")
     suspend fun collectArticle(@Path("id") id: Int): ApiResponse<Any?>
+
     @POST("lg/uncollect_originId/{id}/json")
-    suspend fun unCollectArticle(@Path("id") id: Int):ApiResponse<Any?>
+    suspend fun unCollectArticle(@Path("id") id: Int): ApiResponse<Any?>
+
     @GET("user_article/list/{page}/json")
-    suspend fun getSquareArticleList(@Path("page")page: Int): ApiResponse<PageResponse<Article>>
+    suspend fun getSquareArticleList(@Path("page") page: Int): ApiResponse<PageResponse<Article>>
+
     @GET("wenda/list/{page}/json ")
-    suspend fun getQaArticleList(@Path("page")page: Int): ApiResponse<PageResponse<Article>>
+    suspend fun getQaArticleList(@Path("page") page: Int): ApiResponse<PageResponse<Article>>
+
     @GET("hotkey/json")
-    suspend fun getHotKeyList():ApiResponse<List<Hotkey>>
+    suspend fun getHotKeyList(): ApiResponse<List<Hotkey>>
+
     @POST("article/query/{page}/json")
-    suspend fun searchArticleList(@Path("page") page: Int,@Query("k")content: String): ApiResponse<PageResponse<Article>>
+    suspend fun searchArticleList(
+        @Path("page") page: Int,
+        @Query("k") content: String
+    ): ApiResponse<PageResponse<Article>>
 
 }
